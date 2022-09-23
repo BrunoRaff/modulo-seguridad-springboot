@@ -16,24 +16,45 @@ public class ModuloSeguridadApplication {
 		Class.forName("com.mysql.jdbc.Driver");
 
 		//Crear Conexion
-		Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/moduloseg",
+		Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/educa",
 				"root",
 				"root");
 
-		//Crear Statement
-		Statement statement = conexion.createStatement();
-		PreparedStatement pt = conexion.prepareStatement("SELECT * FROM USERS WHERE id = ? and username = ?");
-		pt.setInt(1,1);
-		pt.setString(2,"DNI73267854");
+		//Statement - Listar
 
-		//Ejecutar sentencia
+			Statement statement = conexion.createStatement();
+			ResultSet result = statement.executeQuery("Select * from ALUMNO");
 
-		ResultSet resultado = pt.executeQuery();
+			//Recorrer lista
+			System.out.println("----------------------Listar----------------------------");
 
-		//Recorrer resultado
-		while (resultado.next()){
-			System.out.println(resultado.getString("name"));
-		}
+			while (result.next()) {
+				System.out.println(result.getString("alu_id"));
+				System.out.println(result.getString("alu_nombre"));
+				System.out.println(result.getString("alu_usuario"));
+				System.out.println(result.getString("alu_direccion"));
+				System.out.println(result.getString("alu_telefono"));
+
+			}
+			System.out.println("----------------------------Fin - Listar------------------");
+
+			//PreparedStatment - DELETE
+			System.out.println("----------------------DELETE----------------------------");
+
+			PreparedStatement preparedStatement =
+				conexion.prepareStatement("DELETE FROM ALUMNO WHERE alu_id=?");
+				preparedStatement.setInt(1,1);
+				int filasAfectadas = preparedStatement.executeUpdate();
+			System.out.println("Filas afectadas: " + filasAfectadas);
+		 System.out.println("----------------------------Fin - DELETE------------------");
+		 //CallableStatment
+		System.out.println("----------------------UPDATE----------------------------");
+			CallableStatement callSp = conexion.prepareCall("{Call updateAlumno(?,?)}");
+			callSp.setString(1,"YESENIA VIRHUEZ");
+			callSp.setString(2,"YESENIA VILCHEZ");
+			int filasAfectadas2 = callSp.executeUpdate();
+		System.out.println("Filas afectadas: " + filasAfectadas2);
+		System.out.println("----------------------------Fin - UPDATE------------------");
+	}
 	}
 
-}
