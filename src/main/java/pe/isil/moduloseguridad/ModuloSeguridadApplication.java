@@ -43,7 +43,7 @@ public class ModuloSeguridadApplication {
 
 			PreparedStatement preparedStatement =
 				conexion.prepareStatement("DELETE FROM ALUMNO WHERE alu_id=?");
-				preparedStatement.setInt(1,1);
+				preparedStatement.setInt(1,4);
 				int filasAfectadas = preparedStatement.executeUpdate();
 			System.out.println("Filas afectadas: " + filasAfectadas);
 		 System.out.println("----------------------------Fin - DELETE------------------");
